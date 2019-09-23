@@ -2,14 +2,14 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Coffee Database</title>
+	<title>HR Database</title>
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 	<form action='' method="POST">
 		<img src='./image/logo.png' id='logo'>
-		<h2>Coffee Database</h2>
+		<h2>HR Database</h2>
 		<?php
 			include('./config.php');
 			if(isset($_POST['username']) && isset($_POST['password'])){
