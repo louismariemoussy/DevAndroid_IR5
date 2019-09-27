@@ -13,7 +13,7 @@
 		<?php
 			include('./config.php');
 			if(isset($_POST['username']) && isset($_POST['password'])){
-				if ($_POST['username'] == $username && md5($_POST['password']) == md5($password)){
+				if ($_POST['username'] == $username && hash('sha256', $_POST['password']) == $password){
 					echo "<p id='left'>Welcome  ".htmlentities($_POST['username'])."</p>";
 					echo '<input type="submit" value="LOG IN" href="./index.php" class="button" />';
 				}
