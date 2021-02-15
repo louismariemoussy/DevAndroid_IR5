@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+    <string name="Calendar">Calendar</string>
+    <string name="Plus">➕</string>
+    <string name="rdv">RDV</string>
+    <string name="évenement">Event</string>
+    <string name="delete">Delete profil</string>
+    <string name="add">Add profil</string>
+    <string name="adduser">Add</string>
+    <string name="modify">Modify profil</string>
+</resources>
