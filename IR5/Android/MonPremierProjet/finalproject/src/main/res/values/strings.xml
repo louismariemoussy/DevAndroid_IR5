@@ -8,4 +8,6 @@
     <string name="add">Add profil</string>
     <string name="adduser">Add</string>
     <string name="modify">Modify profil</string>
+    <string name="family_event">Family event</string>
+    <string name="family_check">People</string>
 </resources>

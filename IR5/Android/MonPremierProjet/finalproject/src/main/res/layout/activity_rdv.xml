@@ -62,7 +62,7 @@
     android:layout_above="@+id/btnSetDate"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="20dp"
-    android:gravity="center"
+    android:gravity="left"
     android:textSize="10dp"
         android:layout_weight="1"/>
 
@@ -97,7 +97,7 @@
             android:layout_above="@+id/btnSetDate"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:gravity="center"
+            android:gravity="left"
             android:textSize="10dp"
             android:layout_weight="1"/>
 
@@ -113,6 +113,78 @@
 
     </LinearLayout>
 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        >
+    <Switch
+        android:id="@+id/Familywitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/family_event"
+        android:checked="false"
+        android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="left"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:id="@+id/FamilyCheck"
+        android:text="@string/family_check"
+        android:textSize="20dp"
+        android:textColor="@color/offwhite"
+        ></TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:id="@+id/FamilySelected"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"></TextView>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="50dp"
+
+        >
+
+
+    <android.widget.Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/AddBtn"
+        android:background="@drawable/roundedbutton"
+        android:text="Add"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        ></android.widget.Button>
+
+    </LinearLayout>
 
 
 </LinearLayout>
