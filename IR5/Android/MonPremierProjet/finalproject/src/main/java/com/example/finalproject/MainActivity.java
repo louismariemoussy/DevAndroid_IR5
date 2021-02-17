@@ -64,27 +64,36 @@ public class MainActivity extends AppCompatActivity {
         convertisseur.inflate(R.menu.pop_up, monMenuPopup.getMenu());
         monBouton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                monMenuPopup.show();
-                monMenuPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                                            @Override
-                                                            public boolean onMenuItemClick(MenuItem menuItem) {
+                Bundle extras = new Bundle();
+                extras.putInt("user_id", user_id_db);
+                extras.putString("user_name",listeDeroulante.getItemAtPosition(user_id_list).toString().trim());
+
+                Intent i = new Intent(getApplicationContext(),RdvActivity.class).putExtras(extras);
+                startActivity(i);
+
+                //monMenuPopup.show();
+                //monMenuPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                //                                            @Override
+                //                                            public boolean onMenuItemClick(MenuItem menuItem) {
                                                                 // Toast message on menu item clicked
                                                                 //Toast.makeText(login.this, "You Clicked " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
 
-                                                                switch (menuItem.getTitle().toString() ){
-                                                                    case "RDV":
-                                                                        //startActivity(new Intent(MainActivity.this, ModifyActivity.class));
-                                                                        Intent i = new Intent(getApplicationContext(),RdvActivity.class);
-                                                                        startActivity(i);
-                                                                        break;
-                                                                    case "Event":
-                                                                        //startActivity(new Intent(login.this, AddUserActivity.class));
-                                                                        break;
-                                                                }
-                                                                return true;
-                                                            }
-                                                        }
-                );
+
+
+                                                                //switch (menuItem.getTitle().toString() ){
+                                                                //    case "RDV":
+                                                                //        //startActivity(new Intent(MainActivity.this, ModifyActivity.class));
+                                                                //        Intent i = new Intent(getApplicationContext(),RdvActivity.class);
+                                                                //        startActivity(i);
+                                                                //        break;
+                                                                //    case "Event":
+                                                                //        //startActivity(new Intent(login.this, AddUserActivity.class));
+                                                                //        break;
+                                                                //}
+                                                                //return true;
+                                                            //}
+                                                        //}
+                //);
             }
 
 

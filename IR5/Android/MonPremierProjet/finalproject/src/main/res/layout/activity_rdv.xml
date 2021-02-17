@@ -51,7 +51,7 @@
         android:orientation="horizontal"
         android:paddingTop="50dp"
         android:paddingLeft="20dp"
-        android:paddingRight="10dp">
+        android:paddingRight="20dp">
 
     <TextView
         android:layout_width="0dp"
@@ -163,20 +163,58 @@
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="left"
+        android:paddingTop="30dp"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/note"
+            android:text="@string/description"
+            android:textSize="20dp"
+            android:textColor="@color/offwhite"
+            ></TextView>
+
+
+
+    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:id="@+id/description"
+        android:maxLength="200"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:maxLines="5"
+        ></EditText>
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:paddingTop="50dp"
 
         >
+
+    </LinearLayout>
+
 
 
     <android.widget.Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/AddBtn"
+        android:id="@+id/addBtn"
         android:background="@drawable/roundedbutton"
         android:text="Add"
         android:layout_marginTop="10dp"
@@ -186,5 +224,3 @@
 
     </LinearLayout>
 
-
-</LinearLayout>

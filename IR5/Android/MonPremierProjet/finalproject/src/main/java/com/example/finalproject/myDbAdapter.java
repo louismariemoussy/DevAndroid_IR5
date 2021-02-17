@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.view.ViewDebug;
+import android.widget.Toast;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 class myDbAdapter {
@@ -169,6 +172,48 @@ class myDbAdapter {
 
     }
 
+    //---------ADD AN EVENT-------------------------------------------------------------------------
+    public long insertRDV(String title, String start_date, String end_date, boolean family,  int creator, String description)
+    {
+        SQLiteDatabase dbb = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+
+
+        //RDV TABLE DATA
+        contentValues.put(myDbHelper.CREATOR_ID,creator);
+        contentValues.put(myDbHelper.STARTING_DATE,start_date);
+        contentValues.put(myDbHelper.END_DATE,end_date);
+        contentValues.put(myDbHelper.OBJECT,family);
+        contentValues.put(myDbHelper.DESCR,description);
+        //contentValues.put(myDbHelper., );
+
+        long id = dbb.insert(myDbHelper.TABLE_NAME_USER, null , contentValues);
+
+        return id;
+    }
+
+    public ArrayList createLINK(int rdvID, ArrayList userID)
+    {
+        SQLiteDatabase dbb = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        ArrayList ids = new ArrayList();
+
+        //contentValues.put(myDbHelper., );
+        //LINK TABLE DATA
+
+        for(int t =0; t<userID.size();t++){
+            contentValues.put(myDbHelper.RDV_ID,rdvID);
+            contentValues.put(myDbHelper.USER_ID,userID.get(t).toString());
+            long id = dbb.insert(myDbHelper.TABLE_NAME_LINK, null , contentValues);
+            ids.add(id);
+            contentValues.clear();
+        }
+
+
+
+        return ids;
+    }
 
 
     //-----------------------------------RDV--------------------------------------------------------
@@ -208,12 +253,13 @@ class myDbAdapter {
         private static final String TABLE_NAME_RDV = "RDV";   // Table Name
         private static final String RID="_id";     // Column I (Primary Key)
         private static final String CREATOR_ID = "uid";    //Column II
-        private static final String STARTING_DATE= "date";    // Column III
-        private static final String END_DATE= "date";    // Column III
-        private static final String OBJECT= "object";    // Column IV
-        private static final String TAG= "tag";    // Column V
+        private static final String TITLE = "title";    //Column III
+        private static final String STARTING_DATE= "date";    // Column IV
+        private static final String END_DATE= "date";    // Column V
+        private static final String OBJECT= "object";    // Column VI
+        private static final String DESCR= "descr";    // Column VII description
         private static final String CREATE_TABLE2 = "CREATE TABLE "+TABLE_NAME_RDV+
-                " ("+RID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CREATOR_ID+" NUMBER ,"+ STARTING_DATE+" DATETIME,"+ END_DATE+" DATETIME,"+OBJECT+" VARCHAR(225),"+TAG+" VARCHAR(225));";
+                " ("+RID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CREATOR_ID+" NUMBER ,"+ TITLE+" VARCHAR(225),"+ STARTING_DATE+" DATETIME,"+ END_DATE+" DATETIME,"+OBJECT+" BOOLEAN,"+DESCR+" VARCHAR(225));";
         private static final String DROP_TABLE_RDV ="DROP TABLE IF EXISTS "+TABLE_NAME_RDV;
 
         //LINK TABLE

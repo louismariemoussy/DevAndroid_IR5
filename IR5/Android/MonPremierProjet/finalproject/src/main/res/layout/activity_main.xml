@@ -44,8 +44,9 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/ic_add"
             android:padding="20dp"
+            android:paddingRight="50dp"
+            android:paddingLeft="50dp"
             app:icon="@drawable/ic_add"
-
             ></android.widget.Button>
 
     </LinearLayout>

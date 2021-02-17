@@ -7,17 +7,23 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
@@ -33,8 +39,21 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
 
     Button start_date;
     TextView start_date_view;
+    TextView end_date_view;
     TimePickerDialog picker;
     myDbAdapter helper;
+
+    a variable = new a();
+
+    String sql_start_date;
+    String sql_end_date;
+    String sql_start_time;
+    String sql_end_time;
+    String sql_start;
+    String sql_end;
+
+
+
     private ArrayList<Integer> AllName;
 
     @Override
@@ -48,6 +67,12 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
 
         //https://www.youtube.com/watch?v=Le47R9H3qow
 
+        Bundle extras = getIntent().getExtras();
+        int user_id_db = extras.getInt("user_id");
+        String user_name = extras.getString("user_name");
+
+        //int user_id_db = getIntent().getIntExtra("user_id", 0);//get the user id in the db
+
 
 
         Button start_date = findViewById(R.id.btnSetDate);
@@ -58,6 +83,9 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
         Switch family_switch = findViewById(R.id.Familywitch);
         TextView family_check =findViewById(R.id.FamilyCheck);
         TextView family_selected = findViewById(R.id.FamilySelected);
+        EditText title = findViewById(R.id.title_rdv);
+        Button add_btn = findViewById(R.id.addBtn);
+        EditText descr = findViewById(R.id.description);
 
         //to get name in the db
         helper = new myDbAdapter(this);
@@ -111,13 +139,90 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
             }
         });
 
-        //Open satrt date selector
-        start_date_view.setOnClickListener(new View.OnClickListener() {
+
+        // ADD IN THE DB
+        add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               //Si pas de titre -> toast
+                if(title.getText().length() == 0 ){
+                    Toast.makeText(RdvActivity.this, "Require a title", Toast.LENGTH_SHORT).show();
+                }else {
+                    //Add to the database
+
+                    //get user id
+                    //get all the data
+                    sql_start = sql_start_date + " " + sql_start_time;
+                    sql_end = sql_end_date + " " + sql_end_time;
+
+                    String Title = title.getText().toString();
+                    String start = sql_start;
+                    String end = sql_end;
+                    boolean fam = family_switch.isChecked();
+                    int creator = user_id_db;
+                    String description = descr.getText().toString();
+
+
+                    //insert into RDV TABLE
+                    long rdvID = helper.insertRDV(Title,start,end,fam,creator,description);//String title, String start_date, String end_date, boolean family,  int creator, String description
+                    //get id of the new item in RDV TABLE
+                    //get if a family event or get all the people
+                    //insert in LINK TABLE   createLINK(int rdvID, String userID[])
+                    if(fam == true){
+                        //get all the name
+                        String name = helper.getName();
+                        ArrayList<String> UserList = new ArrayList<>();
+                        String[] all = (name.replaceAll("\\s+$", "")).split(" ");
+                        UserList = new ArrayList<String>();
+                        for(int i=0; i<all.length; i++)
+                            UserList.add(all[i]);
+                        //get all the ids
+                        ArrayList allID = new ArrayList();
+                        for(int i=0; i<UserList.size(); i++)
+                            allID.add(helper.getIdByName(UserList.get(i)));
+
+                            helper.createLINK((int)rdvID,allID);
+
+
+
+
+
+                    }else{
+                        //get the name selected
+                        ArrayList people_name =new ArrayList();
+                        for(int i = 0; i<AllName.size();i++) {
+                            people_name.add(nameList[AllName.get(i)]);
+                        }
+                        //get all the ids
+                        ArrayList allID = new ArrayList();
+                        ArrayList<String> UserList = new ArrayList<>();
+                        for(int i=0; i<UserList.size(); i++)
+                            allID.add(helper.getIdByName(UserList.get(i)));
+
+                        helper.createLINK((int)rdvID,allID);
+
+
+                    }
+                }
+
+
+            }
+        });
+
+
+        //Open satrt date selector
+        start_date_view.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                variable.setVar(1);
                 com.example.finalproject.DatePicker mDatePicker;
                 mDatePicker = new com.example.finalproject.DatePicker();
                 mDatePicker.show(getSupportFragmentManager(), "DATE PICK");
+
+                //start_date_view.setText(return_date);
+
+
 
             }
         });
@@ -126,9 +231,15 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
         end_date_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                com.example.finalproject.DatePicker mDatePicker;
-                mDatePicker = new com.example.finalproject.DatePicker();
-                mDatePicker.show(getSupportFragmentManager(), "DATE PICK");
+                variable.setVar(-1);
+                com.example.finalproject.DatePicker mDatePickerEnd;
+                mDatePickerEnd = new com.example.finalproject.DatePicker();
+                mDatePickerEnd.show(getSupportFragmentManager(), "DATE PICK");
+                //end_date_view.setText(return_date);
+
+
+
+
 
             }
         });
@@ -146,6 +257,7 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                                 start_time_view.setText(sHour + ":" + sMinute);
+                                sql_start_time = sHour + ":" + sMinute;
                             }
                         }, hour, minutes, true);
                 picker.show();
@@ -166,6 +278,7 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                                 end_time_view.setText(sHour + ":" + sMinute);
+                                sql_end_time = sHour + ":" + sMinute;
                             }
                         }, hour, minutes, true);
                 picker.show();
@@ -194,14 +307,18 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
 
         });
 
-        //cleick on the people btn to select the family menber
+        //cleick on the people btn to select the family member
         //https://www.youtube.com/watch?v=wfADRuyul04
         family_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RdvActivity.this);
-                mBuilder.setTitle("Family menber");
-                mBuilder.setMultiChoiceItems(nameList, checkedMembers, new DialogInterface.OnMultiChoiceClickListener() {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RdvActivity.this,R.style.alertdialog);
+                mBuilder.setTitle("Family member");
+
+                String name2 = name.replace(user_name,"").replaceAll("(?m)^[ \t]*\r?\n", "");
+                //Toast.makeText(RdvActivity.this, name2, Toast.LENGTH_SHORT).show();
+                String[] nameListNoUser = (name2.replaceAll("\\s+$", "")).split(" ");
+                mBuilder.setMultiChoiceItems(nameListNoUser, checkedMembers, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
@@ -220,7 +337,7 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
                     public void onClick(DialogInterface dialog, int which) {
                         String item = "";
                         for(int i = 0; i<AllName.size();i++){
-                            item = item + nameList[AllName.get(i)];
+                            item = item + nameListNoUser[AllName.get(i)];
                             if(i != AllName.size()-1){
                                 item = item + ", ";
                             }
@@ -249,7 +366,8 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
                             AllName.clear();
                             family_selected.setText("");
                         }
-                    }
+
+                                            }
                 });
                 AlertDialog mDialog = mBuilder.create();
                 mDialog.show();
@@ -267,7 +385,12 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
 
     {
 
+
+        int a = variable.getVar();
+
+
         TextView start_date_view = findViewById(R.id.txtStartDate);
+        TextView end_date_view = findViewById(R.id.txtEndDate);
         // Create a Calender instance
 
         Calendar mCalender = Calendar.getInstance();
@@ -287,8 +410,23 @@ public class RdvActivity extends AppCompatActivity implements DatePickerDialog.O
 
         // Set the textview to the selectedDate String
 
-        start_date_view.setText(selectedDate);
+        if(a==1){
+            start_date_view.setText(selectedDate);
+            sql_start_date = DateFormat.getDateInstance(DateFormat.SHORT).format(mCalender.getTime());//dd/mm/yyyy
+
+        }else{
+            end_date_view.setText(selectedDate);
+            sql_end_date = DateFormat.getDateInstance(DateFormat.SHORT).format(mCalender.getTime());//dd/mm/yyyy
+            //Toast.makeText(RdvActivity.this, "SQL end dare "+sql_end_date, Toast.LENGTH_SHORT).show();
+
+
+        }
+
+
 
     }
+
+
+
 
 }
