@@ -58,8 +58,7 @@ public class ModifyActivity extends AppCompatActivity implements AdapterView.OnI
         //Drop down
         String name = helper.getName();
         //id=1;
-        String phone = helper.getPhonebyID(id_selected);
-        mPhoneView.setText(phone);
+
 
 
         //Message.message(this,name);
@@ -71,6 +70,9 @@ public class ModifyActivity extends AppCompatActivity implements AdapterView.OnI
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         choose_user.setAdapter(adapter);
+
+        String phone = helper.getPhoneByName(choose_user.getItemAtPosition((id_selected)).toString());
+        mPhoneView.setText(phone);
 
 
 
@@ -106,8 +108,12 @@ public class ModifyActivity extends AppCompatActivity implements AdapterView.OnI
         //Toast.makeText(ModifyActivity.this, "You Clicked " + parent.getItemAtPosition(pos) + pos, Toast.LENGTH_SHORT).show();
          id = pos+1;
         id_selected = (int)id;
-        String phone = helper.getPhonebyID((int)id);
+        String name = parent.getItemAtPosition(pos).toString().trim().replace("\n", "").replace("\r", "");
+        //Toast.makeText(ModifyActivity.this, name, Toast.LENGTH_SHORT).show();
+        String phone = helper.getPhoneByName(name);
+        //Toast.makeText(ModifyActivity.this, phone, Toast.LENGTH_SHORT).show();
         mPhoneView.setText(phone);
+
     }
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback

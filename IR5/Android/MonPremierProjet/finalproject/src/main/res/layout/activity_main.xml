@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20pt"
-        android:text="@string/Calendar" />
+        android:text="@string/Calendar"
+        android:textColor="@color/offwhite"/>
 
     <LinearLayout
         android:layout_width="match_parent"

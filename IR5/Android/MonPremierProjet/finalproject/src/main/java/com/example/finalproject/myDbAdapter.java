@@ -77,6 +77,24 @@ class myDbAdapter {
         return buffer.toString();
     }
 
+    public String getPhoneByName(String name)
+    {
+
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        String[] columns = {myDbHelper.PHONE};
+        Cursor cursor =db.query(myDbHelper.TABLE_NAME_USER,columns,myDbHelper.NAME+" = '"+name+"';", null,null,null,null);
+        StringBuffer buffer= new StringBuffer();
+        while (cursor.moveToNext())
+        {
+            //int cid =cursor.getInt(cursor.getColumnIndex(myDbHelper.UID));
+            String phone =cursor.getString(cursor.getColumnIndex(myDbHelper.PHONE));
+            //String  password =cursor.getString(cursor.getColumnIndex(myDbHelper.PHONE));
+            buffer.append(phone);
+        }
+        return buffer.toString();
+    }
+
+
     public String getIdByName(String name)
     {
 
@@ -190,11 +208,12 @@ class myDbAdapter {
         private static final String TABLE_NAME_RDV = "RDV";   // Table Name
         private static final String RID="_id";     // Column I (Primary Key)
         private static final String CREATOR_ID = "uid";    //Column II
-        private static final String DATE= "date";    // Column III
+        private static final String STARTING_DATE= "date";    // Column III
+        private static final String END_DATE= "date";    // Column III
         private static final String OBJECT= "object";    // Column IV
         private static final String TAG= "tag";    // Column V
         private static final String CREATE_TABLE2 = "CREATE TABLE "+TABLE_NAME_RDV+
-                " ("+RID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CREATOR_ID+" NUMBER ,"+ DATE+" DATETIME,"+OBJECT+" VARCHAR(225),"+TAG+" VARCHAR(225));";
+                " ("+RID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+CREATOR_ID+" NUMBER ,"+ STARTING_DATE+" DATETIME,"+ END_DATE+" DATETIME,"+OBJECT+" VARCHAR(225),"+TAG+" VARCHAR(225));";
         private static final String DROP_TABLE_RDV ="DROP TABLE IF EXISTS "+TABLE_NAME_RDV;
 
         //LINK TABLE

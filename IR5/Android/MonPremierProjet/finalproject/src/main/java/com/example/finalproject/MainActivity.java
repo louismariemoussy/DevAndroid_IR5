@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         //Set the value on the user id from login activity
         listeDeroulante.setSelection(user_id_list);
 
-        Message.message(getApplicationContext(),listeDeroulante.getItemAtPosition(user_id_list).toString().trim());
+        //Message.message(getApplicationContext(),listeDeroulante.getItemAtPosition(user_id_list).toString().trim());
         int user_id_db = Integer.parseInt(helper.getIdByName(listeDeroulante.getItemAtPosition(user_id_list).toString().trim()));
 
 
